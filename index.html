@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alec's Workout Logger</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <meta name="theme-color" content="#111111"/>
+</head>
+<body>
+  <header>
+    <h1>Workout Logger</h1>
+    <div class="meta">
+      <label>Week
+        <input id="week" type="number" min="1" value="1">
+      </label>
+      <label>Day
+        <select id="day">
+          <option value="day1">Day 1 – Push Emphasis</option>
+          <option value="day2">Day 2 – Pull Emphasis</option>
+          <option value="day3">Day 3 – Mixed Full Body</option>
+        </select>
+      </label>
+      <button id="loadPlan">Load Plan</button>
+      <button id="newSession">New Session</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="sessionInfo">
+      <div><strong>Date:</strong> <span id="date"></span></div>
+      <div><strong>Session ID:</strong> <span id="sessionId"></span></div>
+    </section>
+
+    <section id="exercises"></section>
+
+    <section class="controls">
+      <button id="save">Save</button>
+      <button id="exportCSV">Export CSV</button>
+      <button id="exportJSON">Export JSON</button>
+      <button id="importJSON">Import JSON</button>
+      <input type="file" id="importFile" accept=".json" style="display:none;">
+    </section>
+
+    <section class="history">
+      <h2>History</h2>
+      <div id="historyList"></div>
+    </section>
+  </main>
+
+  <footer>
+    <small>Offline-first • Data saved locally in your browser. Use Export to back up.</small>
+  </footer>
+
+  <template id="exerciseTemplate">
+    <div class="exercise">
+      <div class="ex-header">
+        <h3 class="ex-name"></h3>
+        <div class="ex-details"></div>
+      </div>
+      <div class="sets"></div>
+      <div class="ex-actions">
+        <button class="addSet">+ Set</button>
+        <button class="copyLast">Copy Last</button>
+      </div>
+    </div>
+  </template>
+
+  <template id="setRowTemplate">
+    <div class="set-row">
+      <span class="set-num"></span>
+      <input type="number" class="weight" placeholder="Weight" min="0" step="0.5">
+      <span>×</span>
+      <input type="number" class="reps" placeholder="Reps" min="1" step="1">
+      <label class="rir-wrap">RIR
+        <input type="number" class="rir" placeholder="RIR" min="0" max="5" step="1">
+      </label>
+      <input type="text" class="notes" placeholder="Notes (optional)">
+      <button class="deleteSet">✕</button>
+    </div>
+  </template>
+
+  <script>
+  // Simple plan config preloaded with your 3-day full-body program
+  const PLAN = {
+    day1: {
+      title: "Day 1 – Push Emphasis (Chest/Shoulders/Quads)",
+      items: [
+        { name: "Hack Squat", sets: 4, reps: "8–10" },
+        { name: "Flat Barbell/Dumbbell Bench Press", sets: 4, reps: "8–10" },
+        { name: "Overhead Press (Barbell/DB)", sets: 3, reps: "8–10" },
+        { name: "Incline Dumbbell Press", sets: 3, reps: "10–12" },
+        { name: "Lateral Raises", sets: 3, reps: "12–15" },
+        { name: "Optional Core: Hanging Leg Raises / Weighted Plank", sets: 3, reps: "12–15" }
+      ]
+    },
+    day2: {
+      title: "Day 2 – Pull Emphasis (Back/Biceps/Hamstrings)",
+      items: [
+        { name: "Romanian Deadlift (RDL)", sets: 4, reps: "8–10" },
+        { name: "Pull-Ups / Lat Pulldown", sets: 4, reps: "8–12" },
+        { name: "Barbell/Dumbbell Row", sets: 4, reps: "8–10" },
+        { name: "Face Pulls / Rear Delt Fly", sets: 3, reps: "12–15" },
+        { name: "Barbell/Dumbbell Biceps Curl", sets: 3, reps: "10–12" },
+        { name: "Optional Core: Ab Wheel / Cable Crunch", sets: 3, reps: "10–12" }
+      ]
+    },
+    day3: {
+      title: "Day 3 – Mixed Full Body (Strength + Balance)",
+      items: [
+        { name: "Conventional / Trap Bar Deadlift", sets: 4, reps: "5–8" },
+        { name: "Hack Squat (lighter stance variation)", sets: 3, reps: "10–12" },
+        { name: "Incline Barbell / Machine Press", sets: 3, reps: "8–10" },
+        { name: "Chin-Ups (weighted if able)", sets: 3, reps: "8–10" },
+        { name: "Bulgarian Split Squats (DB)", sets: 3, reps: "8–10/leg" },
+        { name: "Shrugs / Farmer Carry", sets: 3, reps: "12–15" }
+      ]
+    }
+  };
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>
